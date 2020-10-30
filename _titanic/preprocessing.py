@@ -35,3 +35,24 @@ def plot_hist(feature, bins=20):
     plt.legend(loc="upper left")
     plt.title('Distribution relative de %s' %feature)
     plt.show()
+
+def dummify(X,cols) :
+    for col in cols:
+        X_dummies=pd.get_dummies(X[col],prefix=col,drop_first=False,dummy_na=False,prefix_sep='_')
+        X=X.join(X_dummies).drop(col,axis=1)
+    return X
+
+def convert_df_columns(data_str,features,type_var):
+    for feature in features:
+        data_str[feature]=data_str[feature].astype(type_var)
+    return data_str
+
+def transform_df(X, columns_to_dummify, features=["Pclass"],thres=10):
+    X=convert_df_columns(X,features,type_var="object")
+    X["is_child"]=X["Age"].apply(lambda x: 0 if x<thres else 1)
+    X["title"]=X["Name"].apply(lambda x: x.split(",")[1].split(".")[0].strip())
+    X["Surname"]=X['Name'].map(lambda x: '(' in x)
+    for col in columns_to_dummify:
+        X_dummies=pd.get_dummies(X[col],prefix=col,drop_first=False,dummy_na=False, prefix_sep='_')
+        X=X.join(X_dummies).drop(col,axis=1)
+    return X.drop("Name",axis=1).drop("Age",axis=1)
