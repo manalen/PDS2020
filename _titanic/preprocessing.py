@@ -15,9 +15,9 @@ def convert_cast(df,categorical_cols):
 
 def input_missing_values(df):
     for col in df.columns:
-        if (df[col].dtype is float) or (df[col].dtype is int):
+        if (df[col].dtype == "float64") or (df[col].dtype is int):
             df[col]=df[col].fillna(df[col].median())
-        if (df[col].dtype == object):
+        if (df[col].dtype == "object"):
             df[col]=df[col].fillna(df[col].mode()[0].split(" ")[0])
     return df
 
@@ -28,7 +28,7 @@ def parse_model(X, use_columns):
     X=X[use_columns]
     return X, target
 
-def plot_hist(feature, bins=20):
+def plot_hist(survived, dead, feature, bins=20):
     x1 = np.array(dead[feature].dropna())
     x2 = np.array(survived[feature].dropna())
     plt.hist([x1, x2], label=["Victime", "Survivant"], bins=bins, color=['r', 'b'])
