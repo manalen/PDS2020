@@ -2,6 +2,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
+import numpy as np
 
 ##Logistic Regression
 def Logistic_Regression_Model (X,y,size,RdomState=42):
